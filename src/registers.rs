@@ -1,16 +1,36 @@
+//! Register definitions for the CC1200.
+
 #![expect(non_camel_case_types, reason = "Register names should match datasheet")]
 
 use bitfield::bitfield;
 
+/// Address of a register in the CC1200 IC.
+///
+/// This contains two variants, since there are two register address spaces in
+/// the CC1200: config, and extended.
 pub enum RegisterAddress {
+    /// Address to a config register.
+    ///
+    /// This address is only six bits wide, and has to be lower than `0x2f`
     Config(u8),
+    /// Addess to an extended register.
+    ///
+    /// This address is eight bits wide.
     Extended(u8),
 }
 
+/// The required shape of a valid register type.
+///
+/// Since all registers in the CC1200 are eight bits wide, we should be able to
+/// convert the type back and forth between a `u8`.
 pub(crate) trait Register: From<u8> + Into<u8> {
+    /// Address of the register
     const ADDRESS: RegisterAddress;
 }
 
+/// Helper for creating a mapping between a register struct and it's address in
+/// the device. This will create a suitable [`Register`] implementation on the
+/// struct.
 macro_rules! register_mapping {
     ($name:ident, $region:ident($address:literal)) => {
         impl From<u8> for $name {
