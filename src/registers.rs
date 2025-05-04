@@ -13,9 +13,6 @@ pub enum RegisterAddress {
     ///
     /// This address is only six bits wide, and has to be lower than `0x2f`
     Config(u8),
-    /// Addess to an extended register.
-    ///
-    /// This address is eight bits wide.
     Extended(u8),
 }
 
