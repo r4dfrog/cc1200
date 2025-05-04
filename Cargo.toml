@@ -2,6 +2,12 @@
 name = "cc1200"
 version = "0.1.0"
 edition = "2024"
+repository = "https://github.com/r4dfrog/cc1200"
+license-file = "LICENSE"
+keywords = ["embedded-hal", "cc1200", "radio", "iot"]
+categories = ["embedded", "no-std", "no-std::no-alloc"]
+description = "Embedded-hal driver for the TI CC1200 radio transceiver"
 
 [dependencies]
+bitfield = "0.19.0"
 embedded-hal = "1.0.0"
