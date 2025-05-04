@@ -3,6 +3,8 @@ use embedded_hal::spi::{Operation, SpiDevice};
 
 use crate::registers::{Register, RegisterAddress};
 
+const EXTENDED_REGISTER_MAGIC_ADDR: u8 = 0x2f;
+
 bitfield! {
     struct Header(u8);
 
@@ -23,7 +25,7 @@ pub fn read_register<Spi: SpiDevice, R: Register>(spi: &mut Spi) -> Result<R, Sp
         }
         RegisterAddress::Extended(addr) => {
             let mut header = Header(0x00);
-            header.set_address(0x2f);
+            header.set_address(EXTENDED_REGISTER_MAGIC_ADDR);
             header.set_burst_bit(false);
             header.set_write_bit(false);
             spi.transaction(&mut [
