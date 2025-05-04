@@ -4,15 +4,15 @@
 
 use bitfield::bitfield;
 
-/// Address of a register in the CC1200 IC.
-///
-/// This contains two variants, since there are two register address spaces in
-/// the CC1200: config, and extended.
+/// Address of a register in the CC1200 IC.  /// /// This contains two variants, since there are two register address spaces in /// the CC1200: config, and extended.
 pub enum RegisterAddress {
     /// Address to a config register.
     ///
     /// This address is only six bits wide, and has to be lower than `0x2f`
     Config(u8),
+    /// Addess to an extended register.
+    ///
+    /// This address is eight bits wide.
     Extended(u8),
 }
 
@@ -25,9 +25,7 @@ pub(crate) trait Register: From<u8> + Into<u8> {
     const ADDRESS: RegisterAddress;
 }
 
-/// Helper for creating a mapping between a register struct and it's address in
-/// the device. This will create a suitable [`Register`] implementation on the
-/// struct.
+/// Helper for creating a mapping between a register struct and it's address in the device. This will create a suitable [`Register`] implementation on the struct.
 macro_rules! register_mapping {
     ($name:ident, $region:ident($address:literal)) => {
         impl From<u8> for $name {
